@@ -9,6 +9,7 @@ var config = require('./config.json');
 var state    = require('./lib/state');
 var notify   = require('./lib/notify');
 var interact = require('./lib/interact');
+var ctcp     = require('./lib/ctcp');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -68,7 +69,9 @@ bot.addListener('notice', function(nick, to, text, message){
 bot.addListener('ping', function(server){});
 
 // CTCP request recieved
-bot.addListener('ctcp', function(from, to, text, type, message){});
+bot.addListener('ctcp', function(from, to, type, message){
+    ctcp.parse(bot, config, state, from, to, type, message);
+});
 
 // Nick changed
 bot.addListener('nick', function(oldnick, newnick, channels, message){
