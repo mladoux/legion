@@ -10,6 +10,7 @@ var state    = require('./lib/state');
 var notify   = require('./lib/notify');
 var interact = require('./lib/interact');
 var ctcp     = require('./lib/ctcp');
+var chan     = require('./lib/chan');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -30,28 +31,20 @@ bot.addListener('topic', function(channel, topic){});
 
 // User joined channel
 bot.addListener('join', function(channel, nick, message){
-    if(nick == config.botName) {
-        state.addChannel(channel);
-    } else if (state.canVoice(channel)) {
-        bot.send('MODE', channel, '+v', nick);
-    }
+    chan.parseJoin(bot,state, config, channel, nick, message);
 });
 
 // User left channel
-bot.addListener('part', function(channel, nick, reason, message){});
+bot.addListener('part', function(channel, nick, reason, message){
+    chan.parsePart(bot, state, config, channel, nick, reason, message);
+});
 
 // User quit server
 bot.addListener('quit', function(nick, reason, channels, message){});
 
 // User kicked from channel
 bot.addListener('kick', function(channel, nick, by, reason, message){
-
-    // rejoin on kick
-    if(nick == config.botName) {
-        console.log('[STATE] kicked from ', channel, 'by', by);
-        bot.join(channel);
-    }
-
+    chan.parseKick(bot, state, config, channel, nick, by, reason, message);
 });
 
 // User killed from server
@@ -62,7 +55,7 @@ bot.addListener('message', function(nick, to, text, message){});
 
 // Notice recieved
 bot.addListener('notice', function(nick, to, text, message){
-    notify.parse(bot, config, state, nick, to, text);
+    notify.parse(bot, config, state, nick, to, text, notice);
 });
 
 // Ping recieved
@@ -114,5 +107,5 @@ bot.addListener('error', function(message){});
 
 // User performed action
 bot.addListener('action', function(from, to, text, message){
-    interact.parse(bot, config, state, from, to, text);
+    interact.parse(bot, config, state, from, to, text, message);
 });
