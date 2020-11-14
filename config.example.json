@@ -1,0 +1,15 @@
+{
+    "server": "irc.chatspike.net",
+    "botName": "legion",
+    "options": {
+        "userName": "legion",
+        "realName": "legion",
+        "channels": [
+            "#bot-test"
+        ],
+        "stripColors": true,
+        "floodProtection": true,
+        "floodProtectionDelay": 500
+    },
+    "password": "somestrongpassword"
+}
