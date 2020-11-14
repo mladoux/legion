@@ -55,7 +55,7 @@ bot.addListener('message', function(nick, to, text, message){});
 
 // Notice recieved
 bot.addListener('notice', function(nick, to, text, message){
-    notify.parse(bot, config, state, nick, to, text, notice);
+    notify.parse(bot, config, state, nick, to, text, message);
 });
 
 // Ping recieved
