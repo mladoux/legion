@@ -6,8 +6,9 @@ var irc = require('irc');
 var config = require('./config.json');
 
 // Objects
-var state  = require('./lib/state');
-var notify = require('./lib/notify');
+var state    = require('./lib/state');
+var notify   = require('./lib/notify');
+var interact = require('./lib/interact');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -109,4 +110,6 @@ bot.addListener('raw', function(message){});
 bot.addListener('error', function(message){});
 
 // User performed action
-bot.addListener('action', function(from, to, text, message){});
+bot.addListener('action', function(from, to, text, message){
+    interact.parse(bot, config, state, from, to, text);
+});
