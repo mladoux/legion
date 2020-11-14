@@ -6,7 +6,8 @@ var irc = require('irc');
 var config = require('./config.json');
 
 // Objects
-var state = require('./lib/state');
+var state  = require('./lib/state');
+var notify = require('./lib/notify');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -56,7 +57,9 @@ bot.addListener('kill', function(nick, reason, channels, message){});
 bot.addListener('message', function(nick, to, text, message){});
 
 // Notice recieved
-bot.addListener('notice', function(nick, to, text, message){});
+bot.addListener('notice', function(nick, to, text, message){
+    notify.parse(bot, config, state, nick, to, text);
+});
 
 // Ping recieved
 bot.addListener('ping', function(server){});
