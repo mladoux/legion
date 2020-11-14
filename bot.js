@@ -30,6 +30,8 @@ bot.addListener('topic', function(channel, topic){});
 bot.addListener('join', function(channel, nick, message){
     if(nick == config.botName) {
         state.addChannel(channel);
+    } else if (state.canVoice(channel)) {
+        bot.send('MODE', channel, '+v', nick);
     }
 });
 
