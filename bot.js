@@ -88,7 +88,7 @@ bot.addListener('invite', function(channel, from, message){});
 bot.addListener('+mode', function(channel, by, mode, argument, message){
 
     // Update channel state
-    state.addMode(bot, state, config, channel, by, mode, argument, message);
+    state.addMode(bot, nicklist, config, channel, by, mode, argument, message);
 
 });
 
@@ -96,7 +96,7 @@ bot.addListener('+mode', function(channel, by, mode, argument, message){
 bot.addListener('-mode', function(channel, by, mode, argument, message){
 
     // update channel state
-    state.remMode(bot, state, config, channel, by, mode, argument, message);
+    state.remMode(bot, nicklist, config, channel, by, mode, argument, message);
 
 });
 
