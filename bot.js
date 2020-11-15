@@ -86,7 +86,7 @@ bot.addListener('+mode', function(channel, by, mode, argument, message){
 
     // Update channel state
     if(argument == config.botName) {
-        state.addMode(bot, config, channel, mode, by);
+        state.addMode(bot, state, config, channel, by, mode, argument, message);
     }
 
 });
@@ -95,7 +95,7 @@ bot.addListener('+mode', function(channel, by, mode, argument, message){
 bot.addListener('-mode', function(channel, by, mode, argument, message){
 
     // update channel state
-    state.remMode(bot, config, channel, mode, by);
+    state.remMode(bot, state, config, channel, by, mode, argument, message);
 
 });
 
