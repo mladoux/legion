@@ -6,11 +6,12 @@ var irc = require('irc');
 var config = require('./config.json');
 
 // Objects
-var state    = require('./lib/state');
-var notify   = require('./lib/notify');
-var interact = require('./lib/interact');
-var ctcp     = require('./lib/ctcp');
-var chan     = require('./lib/chan');
+var state        = require('./lib/state');
+var notify       = require('./lib/notify');
+var interact     = require('./lib/interact');
+var ctcp         = require('./lib/ctcp');
+var chan         = require('./lib/chan');
+var conversation = require('./lib/conversation');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -51,7 +52,9 @@ bot.addListener('kick', function(channel, nick, by, reason, message){
 bot.addListener('kill', function(nick, reason, channels, message){});
 
 // Message recieved
-bot.addListener('message', function(nick, to, text, message){});
+bot.addListener('message', function(nick, to, text, message){
+    conversation.parse(bot, state, config, nick, to, text, message);
+});
 
 // Notice recieved
 bot.addListener('notice', function(nick, to, text, message){
