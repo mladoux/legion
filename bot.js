@@ -12,6 +12,7 @@ var interact     = require('./lib/interact');
 var ctcp         = require('./lib/ctcp');
 var chan         = require('./lib/chan');
 var conversation = require('./lib/conversation');
+var nicklist     = require('./lib/nicklist');
 
 // Start the bot
 var bot = new irc.Client(config.server, config.botName, config.options);
@@ -25,7 +26,9 @@ bot.addListener('registered', function(message){
 bot.addListener('motd', function(motd){});
 
 // Users in channel
-bot.addListener('names', function(channel, nicks){});
+bot.addListener('names', function(channel, nicks){
+    nicklist.parseNames(config, channel, nicks);
+});
 
 // Channel Topic
 bot.addListener('topic', function(channel, topic){});
@@ -85,9 +88,7 @@ bot.addListener('invite', function(channel, from, message){});
 bot.addListener('+mode', function(channel, by, mode, argument, message){
 
     // Update channel state
-    if(argument == config.botName) {
-        state.addMode(bot, state, config, channel, by, mode, argument, message);
-    }
+    state.addMode(bot, state, config, channel, by, mode, argument, message);
 
 });
 
